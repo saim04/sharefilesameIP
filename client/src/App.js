@@ -30,7 +30,7 @@ const App = () => {
       setTimeout(() => {}, 2000);
       setCallApi(!callApi);
     } catch (error) {
-      console.error("Error uploading files.");
+      alert("Error uploading files.");
     }
   };
 
@@ -85,7 +85,7 @@ const App = () => {
       document.body.removeChild(link);
       window.URL.revokeObjectURL(url);
     } catch (error) {
-      console.error("Error downloading the file:", error);
+      alert("Error downloading the file");
     }
   };
 
@@ -209,6 +209,16 @@ const App = () => {
                     />
                     <span onClick={handleUpload}>Browse</span> files to upload
                     and share with same internet users.
+                    <p
+                      style={{
+                        fontSize: "10px",
+                        textAlign: "center",
+                        marginTop: "10px",
+                      }}
+                    >
+                      Max File size should be 10MB, Some formats are not
+                      supported.
+                    </p>
                   </div>
                 ) : (
                   <div className="displayfiles ">

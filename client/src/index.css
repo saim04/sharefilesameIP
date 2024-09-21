@@ -73,6 +73,7 @@ h1 {
   max-width: 800px;
   height: 300px;
   display: flex;
+  text-align: center;
 }
 
 .dashed .text {
