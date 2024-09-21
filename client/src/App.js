@@ -26,7 +26,8 @@ const App = () => {
     });
 
     try {
-      await axios.post("https://sharefilesame-ip.vercel.app/upload", formData);
+      await axios.post("http://localhost:5000/upload", formData);
+      // await axios.post("https://sharefilesame-ip.vercel.app/upload", formData);
       setTimeout(() => {}, 2000);
       setCallApi(!callApi);
     } catch (error) {
@@ -41,7 +42,7 @@ const App = () => {
   const deleteAll = async () => {
     try {
       if (window.confirm("Are you sure you want to delete all files")) {
-        await axios.delete("https://sharefilesame-ip.vercel.app/deleteAll");
+        await axios.delete("http://localhost:5000/deleteAll");
         setCallApi(!callApi);
       }
     } catch (error) {
@@ -56,7 +57,7 @@ const App = () => {
         filenames.push({ name: df.name, _id: df._id });
       });
       try {
-        await axios.post(`https://sharefilesame-ip.vercel.app/delete`, {
+        await axios.post(`http://localhost:5000/delete`, {
           filenames: filenames,
         });
         setCallApi(!callApi);
@@ -67,22 +68,44 @@ const App = () => {
     }
   };
 
+  const handleDownload = async (file) => {
+    try {
+      const response = await axios.get(file.path, {
+        responseType: "blob",
+      });
+
+      // Create a URL for the blob
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", file.originalname || "file"); // Set the file name
+      document.body.appendChild(link);
+      link.click();
+
+      // Clean up the URL object
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error("Error downloading the file:", error);
+    }
+  };
+
   const downloadAll = async () => {
     let filenames = [];
     if (select && selectedFiles.length > 0) {
       selectedFiles.forEach((df) => {
-        filenames.push({ name: df.name, originalname: df.originalname });
+        filenames.push({ path: df.path, originalname: df.originalname });
       });
       setSelectedFiles([]);
     } else {
       displayFiles.forEach((df) => {
-        filenames.push({ name: df.name, originalname: df.originalname });
+        filenames.push({ path: df.path, originalname: df.originalname });
       });
     }
 
     try {
       const res = await axios.post(
-        "https://sharefilesame-ip.vercel.app/downloadall",
+        "http://localhost:5000/downloadall",
         { filenames: filenames },
         { responseType: "blob" }
       );
@@ -114,7 +137,7 @@ const App = () => {
   };
 
   const deSelect = () => {
-    setSelect(!select);
+    setSelect(false);
 
     displayFiles.forEach((f) => {
       f.checked = false;
@@ -125,7 +148,7 @@ const App = () => {
   useEffect(() => {
     setLoading(true);
     const getFiles = async () => {
-      let res = await axios.get("https://sharefilesame-ip.vercel.app/get");
+      let res = await axios.get("http://localhost:5000/get");
       setDisplayFiles(res.data.files);
 
       setLoading(false);
@@ -199,8 +222,8 @@ const App = () => {
                         >
                           {f.type.includes("image") ? (
                             <a
-                              href={!select ? `/uploads/${f.name}` : "#"}
-                              download={!select ? f.originalname : null}
+                              onClick={() => (!select ? handleDownload(f) : "")}
+                              href="#"
                               className={` ${select ? "selecting" : ""} image`}
                               style={{
                                 display: "block",
@@ -233,8 +256,8 @@ const App = () => {
                               className={`singleFile ${
                                 select ? "selecting" : ""
                               } `}
-                              href={!select ? `/uploads/${f.name}` : "#"}
-                              download={!select ? f.originalname : null}
+                              onClick={() => (!select ? handleDownload(f) : "")}
+                              href="#"
                             >
                               <FontAwesomeIcon
                                 style={{ fontSize: "2.8rem" }}
@@ -313,16 +336,3 @@ const App = () => {
 };
 
 export default App;
-
-// <div>
-//   <div>
-//     <input type="file" onChange={handleFiles} multiple />
-//     <button
-//       disabled={files.length === 0 ? true : false}
-//       onClick={handleUpload}
-//     >
-//       Upload
-//     </button>
-
-//   </div>
-// </div>

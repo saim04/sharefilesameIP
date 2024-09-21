@@ -2,8 +2,7 @@ require("dotenv").config();
 const File = require("../model/File");
 const JSZip = require("jszip");
 const cloudinary = require("cloudinary").v2;
-const { PassThrough } = require("stream"); // For streaming the response
-const https = require("https");
+const axios = require("axios");
 
 const imageCtrl = {
   uploadFile: async (req, res) => {
@@ -90,34 +89,18 @@ const imageCtrl = {
     const zip = new JSZip();
 
     try {
-      const downloadPromises = filenames.map((file) => {
-        return new Promise((resolve, reject) => {
-          const cloudinaryUrl = `https://res.cloudinary.com/${process.env.CLOUD_NAME}/image/upload/${file.name}`;
+      for (const file of filenames) {
+        // Get the file URL from Cloudinary using the public ID (file.name)
+        const cloudinaryUrl = file.path; // Update with your cloud name
 
-          https.get(cloudinaryUrl, (response) => {
-            if (response.statusCode !== 200) {
-              return reject(
-                new Error(
-                  `Failed to get '${cloudinaryUrl}' (${response.statusCode})`
-                )
-              );
-            }
-
-            const stream = new PassThrough();
-            response.pipe(stream); // Pipe the response into the PassThrough stream
-
-            // Add the streamed data to the ZIP file
-            zip.file(file.originalname, stream);
-
-            // Resolve the promise when the stream finishes
-            response.on("end", resolve);
-            response.on("error", reject);
-          });
+        // Fetch the image data from Cloudinary
+        const response = await axios.get(cloudinaryUrl, {
+          responseType: "arraybuffer",
         });
-      });
 
-      // Wait for all download promises to resolve
-      await Promise.all(downloadPromises);
+        // Add the file to the ZIP with its original name
+        zip.file(file.originalname, response.data);
+      }
 
       // Generate the ZIP file
       const zipData = await zip.generateAsync({ type: "nodebuffer" });
