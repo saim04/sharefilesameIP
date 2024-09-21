@@ -26,8 +26,7 @@ const App = () => {
     });
 
     try {
-      await axios.post("http://localhost:5000/upload", formData);
-      // await axios.post("https://sharefilesame-ip.vercel.app/upload", formData);
+      await axios.post("https://sharefilesame-ip.vercel.app/upload", formData);
       setTimeout(() => {}, 2000);
       setCallApi(!callApi);
     } catch (error) {
@@ -42,7 +41,7 @@ const App = () => {
   const deleteAll = async () => {
     try {
       if (window.confirm("Are you sure you want to delete all files")) {
-        await axios.delete("http://localhost:5000/deleteAll");
+        await axios.delete("https://sharefilesame-ip.vercel.app/deleteAll");
         setCallApi(!callApi);
       }
     } catch (error) {
@@ -57,7 +56,7 @@ const App = () => {
         filenames.push({ name: df.name, _id: df._id });
       });
       try {
-        await axios.post(`http://localhost:5000/delete`, {
+        await axios.post(`https://sharefilesame-ip.vercel.app/delete`, {
           filenames: filenames,
         });
         setCallApi(!callApi);
@@ -105,7 +104,7 @@ const App = () => {
 
     try {
       const res = await axios.post(
-        "http://localhost:5000/downloadall",
+        "https://sharefilesame-ip.vercel.app/downloadall",
         { filenames: filenames },
         { responseType: "blob" }
       );
@@ -148,7 +147,7 @@ const App = () => {
   useEffect(() => {
     setLoading(true);
     const getFiles = async () => {
-      let res = await axios.get("http://localhost:5000/get");
+      let res = await axios.get("https://sharefilesame-ip.vercel.app/get");
       setDisplayFiles(res.data.files);
 
       setLoading(false);
