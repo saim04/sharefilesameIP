@@ -1,0 +1,246 @@
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap");
+
+* {
+  font-family: "Open Sans", sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: rgb(245, 245, 245);
+}
+
+h1 {
+  font-size: 3rem;
+}
+
+/*  */
+.main {
+  display: flex;
+  height: 100vh;
+  flex-direction: column;
+}
+
+.appbox__main {
+  width: 90%;
+  margin: auto;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+}
+
+.appbox {
+  background-color: white;
+  width: 850px;
+  margin: auto;
+  height: 450px;
+  padding: 40px;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
+
+/* Head of app */
+.head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.buttons {
+  display: flex;
+}
+
+.buttons p {
+  margin-left: 2rem;
+  color: rgb(89, 89, 235);
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.buttons p:hover {
+  text-decoration: underline;
+}
+
+.buttons p span {
+  margin-left: 0.5rem;
+}
+
+/* Files Section */
+.files {
+  margin-top: 20px;
+  max-width: 800px;
+  height: 300px;
+  display: flex;
+}
+
+.dashed .text {
+  color: rgb(156, 156, 156);
+  font-size: 1rem;
+}
+.dashed span {
+  color: rgb(43, 164, 245);
+  cursor: pointer;
+}
+.dashed {
+  justify-content: center;
+  align-items: center;
+  border: 1px dashed rgb(202, 200, 200);
+}
+
+.displayfiles {
+  display: flex;
+  flex-wrap: wrap;
+  min-height: 300px;
+  overflow-y: auto;
+}
+
+::-webkit-scrollbar {
+  width: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #e2e2e2;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+.displayfiles__upload {
+  border: 1px dashed rgb(189, 189, 189);
+  font-weight: bold;
+  width: 120px;
+  height: 120px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.8rem;
+  font-size: 0.9rem;
+  color: rgb(189, 189, 189);
+  cursor: pointer;
+}
+.displayfiles__upload:hover {
+  background-color: rgb(247, 247, 247);
+}
+.image:hover {
+  box-shadow: rgba(17, 17, 26, 0.05) 0px 4px 16px,
+    rgba(17, 17, 26, 0.05) 0px 8px 32px;
+}
+.singleFile {
+  width: 120px;
+  height: 120px;
+  text-decoration: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: rgb(189, 189, 189);
+  justify-content: center;
+  gap: 0.8rem;
+  cursor: pointer;
+}
+.singleFile:hover {
+  background-color: rgb(247, 247, 247);
+}
+
+.loader {
+  width: 35px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  border: 5px solid rgb(230, 230, 230);
+  border-right-color: rgb(130, 178, 241);
+  margin: auto;
+  animation: l2 2s infinite linear;
+}
+.selecting {
+  position: relative;
+}
+
+.Tick {
+  position: absolute;
+  z-index: 100;
+  color: white;
+  font-size: 3rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  background-color: rgba(0, 0, 255, 0.2);
+}
+.Tick:hover {
+  opacity: 1;
+}
+
+.Ticked {
+  position: absolute;
+  z-index: 100;
+  color: white;
+  font-size: 3rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  opacity: 1;
+  background-color: rgba(0, 0, 255, 0.5);
+}
+
+@keyframes l2 {
+  to {
+    transform: rotate(1turn);
+  }
+}
+/* Media Queries */
+@media only screen and (max-width: 600px) {
+  .appbox {
+    padding: 0;
+  }
+  .dashed {
+    width: 90%;
+    margin: 20px auto;
+  }
+  .head {
+    flex-direction: column;
+    align-items: unset;
+  }
+  .head div h1 {
+    align-self: flex-start;
+    margin-top: 20px;
+    margin-left: 25px;
+  }
+  .head .buttons {
+    justify-content: space-between;
+    width: 100%;
+    padding: 0 34px;
+
+    margin-top: 20px;
+  }
+  .buttons p {
+    margin-left: 0;
+  }
+
+  .files {
+    padding: 20px;
+    justify-content: center;
+  }
+}
+
+@media only screen and (max-width: 385px) {
+  .head div h1 {
+    margin-left: 13px;
+  }
+  .head .buttons {
+    padding: 0 20px;
+  }
+  .appbox__main {
+    width: 95%;
+  }
+}
